@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: reydix-api-DB
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+
+  reydix-api:
+    build: .
+    ports:
+      - 5000:5000
+      - 9229:9229
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:docker
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres@postgres/reydix-api-DB
+      PORT: 5000

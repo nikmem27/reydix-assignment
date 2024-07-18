@@ -1,0 +1,162 @@
+openapi: 3.0.3
+info:
+  title: "Reydix API"
+  description: |-
+    Reydix API for creating events and artists.
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: memnik27@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://0.0.0.0:5000
+    description: Localhost server
+
+tags:
+  - name: Reydix
+    description: "Reydix API"
+paths:
+  /artists:
+    post:
+      tags: [ Artist ]
+      description: "Creation of a new Artist"
+      operationId: artistCreation
+      requestBody:
+        $ref: "#/components/requestBodies/artistCreate"
+      responses:
+        "201":
+          $ref: "#/components/responses/ArtistResponse"
+  /events:
+    post:
+      tags: [ Event ]
+      description: "Creation of a new Event"
+      operationId: eventCreation
+      requestBody:
+        $ref: "#/components/requestBodies/eventCreate"
+      responses:
+        "201":
+          $ref: "#/components/responses/EventResponse"
+
+components:
+  requestBodies:
+    artistCreate:
+      required: true
+      description: "Artist Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateArtist"
+    eventCreate:
+      required: true
+      description: "Event Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateEvent"
+  schemas:
+    CreateArtist:
+      type: object
+      required: [ name, email ]
+      properties:
+        name:
+          title: "Artist name"
+          type: string
+          example: Example
+        email:
+          title: "Client email"
+          type: string
+          format: email
+          example: foo@example.com
+    CreateEvent:
+      type: object
+      required: [ name, location, startDate, endDate ]
+      properties:
+        name:
+          title: "Event name"
+          type: string
+          example: Event name example
+        location:
+          title: "Location of the event"
+          type: string
+          example: Athens
+        startDate:
+          title: "Start Date of the event"
+          type: string
+          format: date-time
+          example: 2023-01-10T00:00:00.000Z
+        endDate:
+          title: "End Date of the event"
+          format: date-time
+          example: 2023-01-10T00:00:00.000Z
+    ArtistEntity:
+      type: object
+      required: [ id, name, email, events ]
+      properties:
+        id:
+          title: Artist ID
+          type: string
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        name:
+          title: "Artist name"
+          type: string
+          example: Example
+        email:
+          title: "Artist email"
+          type: string
+          format: email
+          example: foo@example.com
+        events:
+          title: "The events in which artist has been participate"
+          type: array
+          example: []
+    EventEntity:
+      type: object
+      required: [ id, name, location, startDate, endDate ]
+      properties:
+        id:
+          title: Event ID
+          type: string
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        name:
+          title: "Event name"
+          type: string
+          example: Example
+        location:
+          title: "Location of the event"
+          type: string
+          example: Athens
+        startDate:
+          title: "Start Date and time of the event"
+          type: string
+          format: date-time
+          example: 2023-01-10T00:00:00.000Z
+        endDate:
+          title: "End Date and time of the event"
+          type: string
+          format: date-time
+          example: 2023-01-10T00:00:00.000Z
+  responses:
+    ArtistResponse:
+      description: "Client Info"
+      headers:
+        "Content-Type":
+          schema:
+            type: string
+            enum: [ "application/json" ]
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ArtistEntity"
+    EventResponse:
+      description: "Client Info"
+      headers:
+        "Content-Type":
+          schema:
+            type: string
+            enum: [ "application/json" ]
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EventEntity"
