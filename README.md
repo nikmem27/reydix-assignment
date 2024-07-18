@@ -8,13 +8,12 @@ This repository contains a Fastify API and uses Prisma models for a PostgreSQL d
 
 ## Getting Started
 
-### 1. Unzip the Project
-
-Unzip the downloaded project file to your desired directory.
+### 1. Clone the Repository
 
 ```sh
-cd reydix-assignment
-```
+git clone https://github.com/nikmem27/reydix-assignment.git
+cd your-repo
+````
 
 ### 2. Run Docker Compose
    On your terminal, on the correct directory, start the services using Docker Compose:
